@@ -48,8 +48,6 @@ if ! grep -q "${RULE_FORWARD}" "${UFW_BEFORE_RULES}"; then
   sed -i "/^COMMIT/i ${RULE_FORWARD}" "${UFW_BEFORE_RULES}"
 fi
 
-# --- Reload UFW ---
-echo "--- Reloading UFW ---"
-ufw reload
+
 
 echo "--- Blocklist update complete ---"

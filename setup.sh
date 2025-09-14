@@ -28,6 +28,11 @@ if [ ! -f "$MYSTERIUM_ENV_FILE" ]; then
   sed -i "s/MY_WALLET_ADDRESS=.*/MY_WALLET_ADDRESS=$wallet_address/" "$MYSTERIUM_ENV_FILE"
 fi
 
+# --- Security Blocklist ---
+echo "--- Applying security blocklist ---"
+chmod +x update-blocklist.sh
+./update-blocklist.sh
+
 # --- Firewall Setup ---
 echo "--- Configuring firewall ---"
 ufw allow 22/tcp   # SSH
@@ -35,11 +40,6 @@ ufw allow 4449/tcp # Mysterium
 ufw default deny incoming
 ufw default allow outgoing
 ufw --force enable
-
-# --- Security Blocklist ---
-echo "--- Applying security blocklist ---"
-chmod +x update-blocklist.sh
-./update-blocklist.sh
 
 # --- Systemd Service Setup ---
 echo "--- Setting up systemd service ---"
