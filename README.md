@@ -2,13 +2,6 @@
 
 This repository provides a set of scripts to easily and securely run a Mysterium VPN node on a Raspberry Pi.
 
-## Features
-
-- **Easy Setup:** A single script to install, configure, and start the node.
-- **Automated:** Runs as a `systemd` service, so it starts on boot.
-- **Secure:** Includes a firewall and a network blocklist to prevent abuse.
-- **Profitable:** Configured to maximize your earnings.
-
 ## Prerequisites
 
 - A Raspberry Pi with a fresh installation of Raspberry Pi OS (or any other Debian-based Linux distribution).
