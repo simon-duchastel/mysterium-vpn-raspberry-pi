@@ -3,6 +3,12 @@
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
+# Check for root privileges
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run as root"
+  exit
+fi
+
 # Change to the script's directory
 cd "$(dirname "$0")"
 
@@ -57,5 +63,5 @@ docker run -d --name $CONTAINER_NAME \
 sleep 15
 
 # Configure the identity
-docker exec $CONTAINER_NAME myst identity register --beneficiary "$MY_WALLET_ADDRESS"
+docker exec $CONTAINER_NAME myst identities register --beneficiary "$MY_WALLET_ADDRESS"
 

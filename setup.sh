@@ -31,7 +31,7 @@ if [ ! -f "$MYSTERIUM_ENV_FILE" ]; then
   cp "$MYSTERIUM_ENV_TEMPLATE" "$MYSTERIUM_ENV_FILE"
   while true; do
     read -p "Enter your Mysterium wallet address: " wallet_address
-    # Basic Ethereum address validation (0x followed by 40 hex characters)
+    # Basic address validation (0x followed by 40 hex characters)
     if [[ $wallet_address =~ ^0x[a-fA-F0-9]{40}$ ]]; then
       break
     else
