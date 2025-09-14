@@ -1,0 +1,13 @@
+[Unit]
+Description=Mysterium VPN Node
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=REPO_DIR
+ExecStart=/bin/bash REPO_DIR/run-node.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
