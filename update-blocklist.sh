@@ -13,6 +13,7 @@ fi
 BLOCKLIST_URL="https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level1.netset"
 BLOCKLIST_FILE="firehol_level1.netset"
 IPSET_NAME="firehol_level1"
+UFW_BEFORE_RULES="/etc/ufw/before.rules"
 
 # --- Download Blocklist ---
 echo "--- Downloading blocklist ---"
@@ -31,23 +32,24 @@ while read -r line; do
   ipset add "$IPSET_NAME" "$line"
 done < "$BLOCKLIST_FILE"
 
-# --- IPTables Rules ---
-echo "--- Applying iptables rules ---"
+# --- UFW Rules ---
+echo "--- Applying UFW rules ---"
 
-# Add new rules if they don't exist
-if ! iptables -C FORWARD -m set --match-set "$IPSET_NAME" dst -j DROP 2>/dev/null; then
-    iptables -I FORWARD -m set --match-set "$IPSET_NAME" dst -j DROP
+# Rules to be added
+RULE_INPUT="-A ufw-before-input -m set --match-set ${IPSET_NAME} dst -j DROP"
+RULE_FORWARD="-A ufw-before-forward -m set --match-set ${IPSET_NAME} dst -j DROP"
+
+# Check if rules already exist
+if ! grep -q "${RULE_INPUT}" "${UFW_BEFORE_RULES}"; then
+  sed -i "/^COMMIT/i ${RULE_INPUT}" "${UFW_BEFORE_RULES}"
 fi
 
-if ! iptables -C INPUT -m set --match-set "$IPSET_NAME" dst -j DROP 2>/dev/null; then
-    iptables -I INPUT -m set --match-set "$IPSET_NAME" dst -j DROP
+if ! grep -q "${RULE_FORWARD}" "${UFW_BEFORE_RULES}"; then
+  sed -i "/^COMMIT/i ${RULE_FORWARD}" "${UFW_BEFORE_RULES}"
 fi
 
-# --- Persist Rules ---
-echo "--- Making rules persistent ---"
-apt-get install -y iptables-persistent
-debconf-set-selections <<< "iptables-persistent iptables-persistent/autosave_v4 boolean true"
-debconf-set-selections <<< "iptables-persistent iptables-persistent/autosave_v6 boolean true"
-/usr/sbin/netfilter-persistent save
+# --- Reload UFW ---
+echo "--- Reloading UFW ---"
+ufw reload
 
 echo "--- Blocklist update complete ---"
