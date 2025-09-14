@@ -25,6 +25,16 @@ echo "--- Starting Docker service ---"
 systemctl enable docker
 systemctl start docker
 
+# Add the user who ran sudo to the docker group
+if [ -n "$SUDO_USER" ]; then
+    echo "--- Adding user $SUDO_USER to docker group ---"
+    usermod -aG docker "$SUDO_USER"
+    echo "User $SUDO_USER added to docker group. You may need to log out and back in for changes to take effect."
+else
+    echo "--- Warning: No SUDO_USER detected. You may need to add your user to the docker group manually ---"
+    echo "Run: sudo usermod -aG docker \$USER"
+fi
+
 # --- Configuration ---
 echo "--- Configuring Mysterium Node ---"
 if [ ! -f "$MYSTERIUM_ENV_FILE" ]; then

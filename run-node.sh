@@ -6,6 +6,20 @@ set -e
 # Change to the script's directory
 cd "$(dirname "$0")"
 
+# Check Docker permissions
+if ! docker ps > /dev/null 2>&1; then
+    echo "Error: Cannot access Docker daemon. This usually means:"
+    echo "1. You need to run this script with sudo, OR"
+    echo "2. Your user needs to be added to the 'docker' group"
+    echo ""
+    echo "To add your user to the docker group, run:"
+    echo "  sudo usermod -aG docker \$USER"
+    echo "  newgrp docker"
+    echo ""
+    echo "Or run this script with sudo."
+    exit 1
+fi
+
 # Load environment variables
 if [ -f "mysterium.env" ]; then
   set -a
