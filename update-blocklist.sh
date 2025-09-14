@@ -20,8 +20,8 @@ curl -o "$BLOCKLIST_FILE" "$BLOCKLIST_URL"
 
 # --- IPSet Setup ---
 echo "--- Creating ipset ---"
-ipset destroy "$IPSET_NAME" || true
-ipset create "$IPSET_NAME" hash:net
+ipset create "$IPSET_NAME" hash:net -exist
+ipset flush "$IPSET_NAME"
 
 while read -r line; do
   # Ignore comments and empty lines
@@ -34,13 +34,14 @@ done < "$BLOCKLIST_FILE"
 # --- IPTables Rules ---
 echo "--- Applying iptables rules ---"
 
-# Flush existing rules to avoid duplicates
-iptables -D FORWARD -m set --match-set "$IPSET_NAME" dst -j DROP || true
-iptables -D INPUT -m set --match-set "$IPSET_NAME" dst -j DROP || true
+# Add new rules if they don't exist
+if ! iptables -C FORWARD -m set --match-set "$IPSET_NAME" dst -j DROP 2>/dev/null; then
+    iptables -I FORWARD -m set --match-set "$IPSET_NAME" dst -j DROP
+fi
 
-# Add new rules
-iptables -I FORWARD -m set --match-set "$IPSET_NAME" dst -j DROP
-iptables -I INPUT -m set --match-set "$IPSET_NAME" dst -j DROP
+if ! iptables -C INPUT -m set --match-set "$IPSET_NAME" dst -j DROP 2>/dev/null; then
+    iptables -I INPUT -m set --match-set "$IPSET_NAME" dst -j DROP
+fi
 
 # --- Persist Rules ---
 echo "--- Making rules persistent ---"
