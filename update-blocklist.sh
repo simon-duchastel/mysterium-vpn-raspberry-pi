@@ -36,8 +36,8 @@ done < "$BLOCKLIST_FILE"
 echo "--- Applying UFW rules ---"
 
 # Rules to be added
-RULE_INPUT="-A ufw-before-input -m set --match-set ${IPSET_NAME} dst -j DROP"
-RULE_FORWARD="-A ufw-before-forward -m set --match-set ${IPSET_NAME} dst -j DROP"
+RULE_INPUT="-A ufw-before-input -m set --match-set ${IPSET_NAME} src -j DROP"
+RULE_FORWARD="-A ufw-before-forward -m set --match-set ${IPSET_NAME} src -j DROP"
 
 # Check if rules already exist
 if ! grep -q "${RULE_INPUT}" "${UFW_BEFORE_RULES}"; then
