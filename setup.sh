@@ -18,7 +18,7 @@ REPO_DIR=$(pwd)
 # --- Dependency Installation ---
 echo "--- Installing dependencies ---"
 apt-get update
-apt-get install -y docker.io ufw curl ipset
+DEBIAN_FRONTEND=noninteractive apt-get install -y docker.io ufw curl ipset
 
 # --- Configuration ---
 echo "--- Configuring Mysterium Node ---"
