@@ -25,22 +25,6 @@ echo "--- Starting Docker service ---"
 systemctl enable docker
 systemctl start docker
 
-# --- Configuration ---
-echo "--- Configuring Mysterium Node ---"
-if [ ! -f "$MYSTERIUM_ENV_FILE" ]; then
-  cp "$MYSTERIUM_ENV_TEMPLATE" "$MYSTERIUM_ENV_FILE"
-  while true; do
-    read -p "Enter your Mysterium wallet address: " wallet_address
-    # Basic address validation (0x followed by 40 hex characters)
-    if [[ $wallet_address =~ ^0x[a-fA-F0-9]{40}$ ]]; then
-      break
-    else
-      echo "Invalid wallet address format. Please enter a valid Ethereum address (0x followed by 40 hex characters)."
-    fi
-  done
-  sed -i "s/MY_WALLET_ADDRESS=.*/MY_WALLET_ADDRESS=$wallet_address/" "$MYSTERIUM_ENV_FILE"
-fi
-
 # --- Security Blocklist ---
 echo "--- Applying security blocklist ---"
 chmod +x update-blocklist.sh

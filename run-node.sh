@@ -49,7 +49,3 @@ docker run -d --name $CONTAINER_NAME \
 
 # Wait for the service to start
 sleep 15
-
-# Configure the identity
-docker exec $CONTAINER_NAME myst identities register --beneficiary "$MY_WALLET_ADDRESS"
-
