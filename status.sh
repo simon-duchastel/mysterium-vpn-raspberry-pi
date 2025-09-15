@@ -20,4 +20,4 @@ docker exec $CONTAINER_NAME myst connection info
 
 echo "
 --- Node Identity ---"
-docker exec $CONTAINER_NAME myst identities get
+docker exec $CONTAINER_NAME myst account info

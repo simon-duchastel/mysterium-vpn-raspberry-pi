@@ -34,18 +34,6 @@ if [ "$(docker ps -aq -f name=$CONTAINER_NAME)" ]; then
     docker rm $CONTAINER_NAME
 fi
 
-# Check Docker image architecture compatibility
-echo "--- Checking Docker image architecture compatibility ---"
-if ! docker manifest inspect $IMAGE_NAME > /dev/null 2>&1; then
-    echo "Warning: Unable to verify Docker image architecture compatibility"
-    echo "The image may not support this platform architecture"
-    read -p "Continue anyway? (y/N): " continue_choice
-    if [[ ! $continue_choice =~ ^[Yy]$ ]]; then
-        echo "Exiting due to architecture compatibility concerns"
-        exit 1
-    fi
-fi
-
 # Pull the latest image
 echo "--- Pulling latest Mysterium image ---"
 docker pull $IMAGE_NAME
