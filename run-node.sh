@@ -44,6 +44,7 @@ docker run -d --name $CONTAINER_NAME \
   --cap-add NET_ADMIN \
   --device=/dev/net/tun \
   -p 4449:4449 \
+  -p 4222:4222 \
   -p 1194:1194/udp \
   -p 51820:51820/udp \
   -p 10000:60000/udp \
