@@ -46,6 +46,3 @@ docker run -d --name $CONTAINER_NAME \
   -v mysterium-node-data:/var/lib/mysterium-node \
   --restart unless-stopped \
   $IMAGE_NAME service --agreed-terms-and-conditions
-
-# Wait for the service to start
-sleep 15
