@@ -42,7 +42,11 @@ docker pull $IMAGE_NAME
 echo "--- Starting Mysterium node ---"
 docker run -d --name $CONTAINER_NAME \
   --cap-add NET_ADMIN \
+  --device=/dev/net/tun \
   -p 4449:4449 \
+  -p 1194:1194/udp \
+  -p 51820:51820/udp \
+  -p 10000:60000/udp \
   -v mysterium-node-data:/var/lib/mysterium-node \
   --restart unless-stopped \
   $IMAGE_NAME service --agreed-terms-and-conditions
