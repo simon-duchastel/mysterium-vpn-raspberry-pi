@@ -40,11 +40,11 @@ RULE_INPUT="-A ufw-before-input -m set --match-set ${IPSET_NAME} src -j DROP"
 RULE_FORWARD="-A ufw-before-forward -m set --match-set ${IPSET_NAME} src -j DROP"
 
 # Check if rules already exist
-if ! grep -Fq "${RULE_INPUT}" "${UFW_BEFORE_RULES}"; then
+if ! grep -Fq -- "${RULE_INPUT}" "${UFW_BEFORE_RULES}"; then
   sed -i "/^COMMIT/i ${RULE_INPUT}" "${UFW_BEFORE_RULES}"
 fi
 
-if ! grep -Fq "${RULE_FORWARD}" "${UFW_BEFORE_RULES}"; then
+if ! grep -Fq -- "${RULE_FORWARD}" "${UFW_BEFORE_RULES}"; then
   sed -i "/^COMMIT/i ${RULE_FORWARD}" "${UFW_BEFORE_RULES}"
 fi
 
