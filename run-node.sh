@@ -48,6 +48,10 @@ docker run -d --name $CONTAINER_NAME \
   -p 1194:1194/udp \
   -p 51820:51820/udp \
   -p 10000:60000/udp \
+  --tequilapi.address=0.0.0.0 \
+  --ui.address=0.0.0.0 \
+  --bind.address=0.0.0.0 \
+  --discovery.dht.address=0.0.0.0
   -v mysterium-node-data:/var/lib/mysterium-node \
   --restart unless-stopped \
   $IMAGE_NAME service --agreed-terms-and-conditions
