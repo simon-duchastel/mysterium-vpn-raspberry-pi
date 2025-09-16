@@ -43,15 +43,7 @@ echo "--- Starting Mysterium node ---"
 docker run -d --name $CONTAINER_NAME \
   --cap-add NET_ADMIN \
   --device=/dev/net/tun \
-  -p 4449:4449 \
-  -p 4222:4222 \
-  -p 1194:1194/udp \
-  -p 51820:51820/udp \
-  -p 10000:60000/udp \
+  --network host \
   -v mysterium-node-data:/var/lib/mysterium-node \
   --restart unless-stopped \
-  $IMAGE_NAME service --agreed-terms-and-conditions \
-  --tequilapi.address=0.0.0.0 \
-  --ui.address=0.0.0.0 \
-  --bind.address=0.0.0.0 \
-  --discovery.dht.address=0.0.0.0
+  $IMAGE_NAME service --agreed-terms-and-conditions
